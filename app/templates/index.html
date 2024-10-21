@@ -1,0 +1,68 @@
+{% extends "base.html" %} 
+{% block content %}
+{% if current_user.is_authenticated %}
+    <div class="row justify-content-center">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3 shadow-lg">
+                <div class="card-header text-center">Total Steps</div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ current_user.total_steps | default(0) }} steps</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <a href = "{{ url_for('workouts') }}" class="card text-white bg-success mb-3 shadow-lg">
+                <div class="card-header text-center">Calories Burned</div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ total_calories | default(0) }} kcal</h5>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3 shadow-lg">
+                <div class="card-header text-center">Calorie Intake</div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ current_user.calorie_intake | default(0) }} kcal</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-3">
+            <a href="{{ url_for('add_workout') }}" class="card text-white bg-warning mb-3 shadow-lg text-decoration-none">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Add Workout</h5>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Get the user's timezone
+        var userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // Send the timezone to the server using fetch
+        fetch('/set_timezone', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ timezone: userTimezone })
+        }).then(response => {
+            if (response.ok) {
+                console.log('Timezone sent successfully');
+            } else {
+                console.error('Failed to send timezone');
+            }
+        }).catch(error => {
+            console.error('Error sending timezone:', error);
+        });
+    </script>
+
+{% else %}
+    <h1>Welcome to the Fitness Tracker</h1>
+    <p>Track your workouts, meals, and progress towards your fitness goals.</p>
+{% endif %}
+
+{% endblock content %}

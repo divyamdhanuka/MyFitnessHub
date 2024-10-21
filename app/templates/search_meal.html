@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-4">
+    <h2 class="text-primary mb-4">Search for Food</h2>
+    <form method="POST" action="{{ url_for('search_meal') }}">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.food_item.label }}
+            {{ form.food_item(class="form-control") }}
+            {% for error in form.food_item.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+
+    {% if results %}
+        <h3 class="text-success my-4">Search Results:</h3>
+        <div class="row">
+            {% for item in results %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm bg-light">
+                        <a href="{{ url_for('add_meal', food_name=item.food_name) }}" class="card-link text-dark">
+                            <div class="card-body text-center">
+                                <img src="{{ item.photo.thumb }}" class="card-img-top img-fluid mx-auto d-block" alt="{{ item.food_name }}" style="max-width: 100px; height: auto;">
+                                <h5 class="card-title mt-2">{{ item.food_name }}</h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+<style>
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .card-link:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-img-top {
+        max-width: 100px;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        margin-top: 1rem;
+    }
+
+    .container {
+        background-color: #f8f9fa;
+        padding: 2rem;
+        border-radius: 10px;
+    }
+
+    h2, h3 {
+        color: #007bff;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    .card {
+        border-radius: 10px;
+        border: none;
+        height: 250px;
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+    .card-body {
+        transition: transform 0.2s;
+    }
+
+    .card:hover {
+        background-color: #e2e6ea;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card:hover .card-body {
+        transform: scale(1.05);
+    }
+</style>

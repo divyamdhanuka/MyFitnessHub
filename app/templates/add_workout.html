@@ -1,0 +1,60 @@
+{% extends "base.html" %} 
+{% block content %}
+<h2>Add Workout</h2>
+<form method="POST" onsubmit="return validateDuration();">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        {{ form.start_time.label }}
+        {{ form.start_time(class="form-control", id="start_time", type="time") }}
+        {% for error in form.start_time.errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.exercise.label }}
+        {{ form.exercise(class="form-control") }}
+        {% for error in form.exercise.errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.duration.label }}
+        {{ form.duration(class="form-control", id="duration") }}
+        {% for error in form.duration.errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <input type="hidden" id="timezone" name="timezone">
+
+    <div class="form-group">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
+
+<script>
+    function validateDuration() {
+        const startTimeField = document.getElementById("start_time");
+        const durationField = document.getElementById("duration");
+        const startTime = startTimeField.value;
+        const duration = parseInt(durationField.value);
+        
+
+        const [hours, minutes] = startTime.split(":").map(Number);
+        const startMinutes = hours * 60 + minutes;
+        const endMinutes = startMinutes + duration;
+
+        if (endMinutes > 24 * 60) {
+            alert("Workout duration exceeds the limit of 24 hours. Please adjust the start time or duration.");
+            return false;
+        }
+        return true;
+    }
+    
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.getElementById("timezone").value = tz;
+</script>
+{% endblock %}
