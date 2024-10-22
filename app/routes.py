@@ -20,8 +20,8 @@ from datetime import time
 import requests
 
 
-NUTRITIONIX_APP_ID = "323041f9"
-NUTRITIONIX_API_KEY = "1cc585a6e270b96c5a7f24b50563cc52"
+NUTRITIONIX_APP_ID = XXXXXXXX
+NUTRITIONIX_API_KEY = XXXXXXX
 
 
 def calculate_calories_burned(exercise, duration):
